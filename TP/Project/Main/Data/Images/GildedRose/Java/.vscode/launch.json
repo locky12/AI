@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - TexttestFixture",
+            "request": "launch",
+            "mainClass": "com.gildedrose.TexttestFixture",
+            "projectName": "gilded-rose-kata"
+        }
+    ]
+}
