@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import constante as const
-# import feuRouge as FR
+import Signilisation.feuRouge as FR
 tailleCase = 50
 COUNT = 0
 class Map :
@@ -13,13 +13,14 @@ class Map :
             self.y = 0
             self.caseX = 0
             self.caseY = 0
-            self.signalisation = None
+            self.signalisation = 0
 
     def __init__ (self):
         self.matrix = 0
         self.positionX = 0
         self.positionY = 0
         self.images = dict()
+
 
 
     def genereMap (self) :
@@ -88,6 +89,7 @@ class Map :
                 x = num_case * const.taille_case + self.positionX
                 y = num_row * const.taille_case + self.positionY
 
+                self.__checkRedLightLocation(window,case,num_row, num_case)
 
                 if case.char == "0" :
                     window.blit(self.images["routeSimple"],(x,y))
@@ -104,9 +106,28 @@ class Map :
                     window.blit(self.images["building"],(x,y))
                 if case.char == "_" :
                     window.blit(self.images["carreNoir"],(x,y))
-                if case.signalisation != None :
-                    case.signalisation.printSignilisation()
+                if case.signalisation != 0 :
+                    case.signalisation.printSignalisation(window,(0,255,0),x,y)
 
                 case.x, case.y = x,y
                 num_case += 1
             num_row += 1
+
+
+
+    def __testRedLightLocation (self,window,case, ccase, crow) :
+        if self.matrix[crow][ccase].char == "0":
+            fr = FR.FeuRouge("RED")
+            case.signalisation = fr
+            # print(case.signalisation)
+            # fr.__drawRedLight(window,"RED", case.x, case.y)
+
+    def __checkRedLightLocation(self,window,case,crow, ccase) :
+        if case.char == "4" and crow < 30  :
+            self.__testRedLightLocation(window ,case, ccase, crow+1)
+        if case.char == "6" and crow > 0 :
+            self.__testRedLightLocation(window , case, ccase, crow-1)
+        if case.char == "8" and ccase > 0 :
+            self.__testRedLightLocation(window ,case,ccase-1, crow)
+        if case.char == "2" and ccase < 30 :
+            self.__testRedLightLocation(window ,case,ccase+1, crow)
