@@ -4,13 +4,15 @@ from Map.map import *
 from Car.car import *
 # from Car.listCar import *
 
-
-
 run = 1
 window = pygame.display.set_mode((3900,3900),RESIZABLE)
 map = Map()
-map.genereMap()
+#dessine la map
 map.viewMap(window)
+#evenement d'inversion des feux rouges
+REVERSEREDLIGHTSCOLORS = USEREVENT + 1
+#on definit le timer
+pygame.time.set_timer(REVERSEREDLIGHTSCOLORS, map.redLightTimer)
 
 car = Car(map,50,50)
 window.blit(car.car,(car.x,car.y))# colle image à la position x et y
@@ -29,9 +31,13 @@ while run:
     for event in pygame.event.get():
         if event.type == QUIT:
             run = 0
-        if event.type == KEYDOWN:
-            # mouvement
 
+        #inversion des feux rouges
+        if event.type == REVERSEREDLIGHTSCOLORS:
+            map.reverseRedLightsColor()
+
+        # mouvement
+        if event.type == KEYDOWN:
             if event.key == K_UP:
                 map.positionY += 50
                 # list.move_all_cars_y(-50)
@@ -45,8 +51,7 @@ while run:
                 map.positionX -= 50
                 # list.move_all_cars_x(-50)
                 # car.x -=50
-            if event.key == K_SPACE:
-                map.reverseRedLightsColor()
+
     # # print(car.x, car.y)
 
 

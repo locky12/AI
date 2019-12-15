@@ -9,7 +9,7 @@ GREEN = (0,255,0)
 class Map :
 
     class Case:
-        def __init__ (self,char):
+        def __init__(self,char):
             self.char = char
             self.x = 0
             self.y = 0
@@ -17,30 +17,15 @@ class Map :
             self.caseY = 0
             self.signalisation = 0
 
-    def __init__ (self):
+    def __init__(self):
         self.matrix = 0
         self.positionX = 0
         self.positionY = 0
         self.images = dict()
+        self.redLightTimer = 10000 #en millisecondes
+        self.__genereMap()
 
-
-
-    def genereMap (self) :
-        self.__initDict()
-        with open("./Data/Map/map.txt", "r") as file:
-            struct = []
-            for row in file :
-                row_struct = []
-                for s in row:
-                    if s != "\n" :
-                        case = self.Case(s)
-                        row_struct.append(case)
-                struct.append(row_struct)
-
-        self.matrix = struct
-        self.__initRedLightLocation()
-
-    def viewMap (self, window) :
+    def viewMap(self, window) :
         # road = pygame.image.load("Images/road.png").convert()
         # road = pygame.transform.scale(road, (50, 50))
         window.blit(self.images["herbe"],(self.positionX,self.positionY))
@@ -91,7 +76,7 @@ class Map :
                 case.x, case.y = x,y
                 num_case += 1
             num_row += 1
-            
+
     def __drawRedLight(self, window):
         num_row = 0
         for countR,row in enumerate(self.matrix):
@@ -106,6 +91,22 @@ class Map :
                 case.x, case.y = x,y
                 num_case += 1
             num_row += 1
+
+    def __genereMap (self) :
+        self.__initDict()
+
+        with open("./Data/Map/map.txt", "r") as file:
+            struct = []
+            for row in file :
+                row_struct = []
+                for s in row:
+                    if s != "\n" :
+                        case = self.Case(s)
+                        row_struct.append(case)
+                struct.append(row_struct)
+
+        self.matrix = struct
+        self.__initRedLightLocation()
 
     def __initRedLightLocation(self) :
         num_row = 0
