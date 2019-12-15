@@ -45,9 +45,11 @@ while run:
                 map.positionX -= 50
                 # list.move_all_cars_x(-50)
                 # car.x -=50
+            if event.key == K_SPACE:
+                map.reverseRedLightsColor()
     # # print(car.x, car.y)
 
-    map.reverseRedLightsColor()
+
     map.viewMap(window)
     # list.print_all_cars(window)
     car.printCar(window)

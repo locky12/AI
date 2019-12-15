@@ -74,21 +74,6 @@ class Map :
 
         self.__drawRedLight(window)
 
-    def __drawRedLight(self, window):
-        num_row = 0
-        for countR,row in enumerate(self.matrix):
-            num_case = 0
-            for countC, case in enumerate(row) :
-                x = num_case * const.taille_case + self.positionX
-                y = num_row * const.taille_case + self.positionY
-
-                if case.signalisation != 0 :
-                    case.signalisation.printFeuRouge(window, x, y)
-
-                case.x, case.y = x,y
-                num_case += 1
-            num_row += 1
-
     def reverseRedLightsColor(self):
         num_row = 0
         for countR,row in enumerate(self.matrix):
@@ -102,6 +87,21 @@ class Map :
                         case.signalisation.color = GREEN
                     else :
                         case.signalisation.color = RED
+
+                case.x, case.y = x,y
+                num_case += 1
+            num_row += 1
+            
+    def __drawRedLight(self, window):
+        num_row = 0
+        for countR,row in enumerate(self.matrix):
+            num_case = 0
+            for countC, case in enumerate(row) :
+                x = num_case * const.taille_case + self.positionX
+                y = num_row * const.taille_case + self.positionY
+
+                if case.signalisation != 0 :
+                    case.signalisation.printFeuRouge(window, x, y)
 
                 case.x, case.y = x,y
                 num_case += 1
