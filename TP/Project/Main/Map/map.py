@@ -4,6 +4,8 @@ import constante as const
 import Signilisation.feuRouge as FR
 tailleCase = 50
 COUNT = 0
+RED = (255,0,0)
+GREEN = (0,255,0)
 class Map :
 
     class Case:
@@ -24,7 +26,7 @@ class Map :
 
 
     def genereMap (self) :
-
+        self.__initDict()
         with open("./Data/Map/map.txt", "r") as file:
             struct = []
             for row in file :
@@ -36,60 +38,19 @@ class Map :
                 struct.append(row_struct)
 
         self.matrix = struct
-
-
-        # print(contenu)
-    # charge les images et affiches les images
-    def initDict(self):
-        herbe = pygame.image.load("./Data/Images/herbe.jpg").convert()
-        herbe = pygame.transform.scale(herbe, (1900, 1000))
-
-        self.images["herbe"] = herbe
-
-        eau = pygame.image.load("./Data/Images/eau.jpg").convert()
-        self.images["eau"] = eau
-
-        carreNoir = pygame.image.load("./Data/Images/carreNoir.jpg").convert()
-        carreNoir = pygame.transform.scale(carreNoir, (tailleCase, tailleCase))
-        self.images["carreNoir"] = carreNoir
-
-        building = pygame.image.load("./Data/Images/home.png").convert_alpha()
-        building = pygame.transform.scale(building, (tailleCase, tailleCase))
-        self.images["building"] = building
-        # carrefour
-        routeSimple = pygame.image.load("./Data/Images/routeSimple.jpg").convert()
-        routeSimple = pygame.transform.scale(routeSimple, (tailleCase, tailleCase))
-        self.images["routeSimple"] = routeSimple
-        #route horizontal haut
-        routeHH = pygame.image.load("./Data/Images/routeHorizontalH.jpg").convert()
-        routeHH = pygame.transform.scale(routeHH, (tailleCase, tailleCase))
-        self.images["routeHH"] = routeHH
-        #route horizontal bas
-        routeHB = pygame.image.load("./Data/Images/routeHorizontalB.jpg").convert()
-        routeHB = pygame.transform.scale(routeHB, (tailleCase, tailleCase))
-        self.images["routeHB"] = routeHB
-        #route vertical gauche
-        routeVG = pygame.image.load("./Data/Images/routeVerticalG.jpg").convert()
-        routeVG = pygame.transform.scale(routeVG, (tailleCase, tailleCase))
-        self.images["routeVG"] = routeVG
-        # route vertical droite
-        routeVD = pygame.image.load("./Data/Images/routeVerticalD.jpg").convert()
-        routeVD = pygame.transform.scale(routeVD, (tailleCase, tailleCase))
-        self.images["routeVD"] = routeVD
-
+        self.__initRedLightLocation()
 
     def viewMap (self, window) :
         # road = pygame.image.load("Images/road.png").convert()
         # road = pygame.transform.scale(road, (50, 50))
-        num_row = 0
         window.blit(self.images["herbe"],(self.positionX,self.positionY))
+
+        num_row = 0
         for countR,row in enumerate(self.matrix):
             num_case = 0
             for countC, case in enumerate(row) :
                 x = num_case * const.taille_case + self.positionX
                 y = num_row * const.taille_case + self.positionY
-
-                self.__checkRedLightLocation(window,case,num_row, num_case)
 
                 if case.char == "0" :
                     window.blit(self.images["routeSimple"],(x,y))
@@ -106,28 +67,90 @@ class Map :
                     window.blit(self.images["building"],(x,y))
                 if case.char == "_" :
                     window.blit(self.images["carreNoir"],(x,y))
-                if case.signalisation != 0 :
-                    case.signalisation.printSignalisation(window,(0,255,0),x,y)
 
                 case.x, case.y = x,y
                 num_case += 1
             num_row += 1
 
+        self.__drawRedLight(window)
 
+    def __drawRedLight(self, window):
+        num_row = 0
+        for countR,row in enumerate(self.matrix):
+            num_case = 0
+            for countC, case in enumerate(row) :
+                x = num_case * const.taille_case + self.positionX
+                y = num_row * const.taille_case + self.positionY
 
-    def __testRedLightLocation (self,window,case, ccase, crow) :
-        if self.matrix[crow][ccase].char == "0":
-            fr = FR.FeuRouge("RED")
-            case.signalisation = fr
-            # print(case.signalisation)
-            # fr.__drawRedLight(window,"RED", case.x, case.y)
+                if case.signalisation != 0 :
+                    case.signalisation.printFeuRouge(window, x, y)
 
-    def __checkRedLightLocation(self,window,case,crow, ccase) :
-        if case.char == "4" and crow < 30  :
-            self.__testRedLightLocation(window ,case, ccase, crow+1)
-        if case.char == "6" and crow > 0 :
-            self.__testRedLightLocation(window , case, ccase, crow-1)
-        if case.char == "8" and ccase > 0 :
-            self.__testRedLightLocation(window ,case,ccase-1, crow)
-        if case.char == "2" and ccase < 30 :
-            self.__testRedLightLocation(window ,case,ccase+1, crow)
+                case.x, case.y = x,y
+                num_case += 1
+            num_row += 1
+
+    def reverseRedLightsColor(self):
+        num_row = 0
+        for countR,row in enumerate(self.matrix):
+            num_case = 0
+            for countC, case in enumerate(row) :
+                x = num_case * const.taille_case + self.positionX
+                y = num_row * const.taille_case + self.positionY
+
+                if case.signalisation != 0 :
+                    if case.signalisation.color == RED :
+                        case.signalisation.color = GREEN
+                    else :
+                        case.signalisation.color = RED
+
+                case.x, case.y = x,y
+                num_case += 1
+            num_row += 1
+
+    def __initRedLightLocation(self) :
+        num_row = 0
+        for countR,row in enumerate(self.matrix):
+            num_case = 0
+            for countC, case in enumerate(row) :
+                x = num_case * const.taille_case + self.positionX
+                y = num_row * const.taille_case + self.positionY
+
+                if case.char == "4" and self.matrix[num_row+1][num_case].char == "0":
+                    case.signalisation = FR.FeuRouge("RED")
+                    case.signalisation.color = RED
+
+                if case.char == "6" and self.matrix[num_row-1][num_case].char == "0":
+                    case.signalisation = FR.FeuRouge("RED")
+                    case.signalisation.color = RED
+
+                if case.char == "8" and self.matrix[num_row][num_case-1].char == "0":
+                    case.signalisation = FR.FeuRouge("RED")
+                    case.signalisation.color = GREEN
+
+                if case.char == "2" and self.matrix[num_row][num_case+1].char == "0":
+                    case.signalisation = FR.FeuRouge("RED")
+                    case.signalisation.color = GREEN
+
+                case.x, case.y = x,y
+                num_case += 1
+            num_row += 1
+
+    # charge les images et affiches les images
+    def __initDict(self):
+        self.images["herbe"] = pygame.transform.scale(pygame.image.load("./Data/Images/herbe.jpg").convert(), (1900, 1000))
+
+        self.images["eau"] = pygame.image.load("./Data/Images/eau.jpg").convert()
+
+        self.images["carreNoir"] = pygame.transform.scale(pygame.image.load("./Data/Images/carreNoir.jpg").convert(), (tailleCase, tailleCase))
+
+        self.images["building"] = pygame.transform.scale(pygame.image.load("./Data/Images/home.png").convert_alpha(), (tailleCase, tailleCase))
+        # carrefour
+        self.images["routeSimple"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeSimple.jpg").convert(), (tailleCase, tailleCase))
+        #route horizontal haut
+        self.images["routeHH"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeHorizontalH.jpg").convert(), (tailleCase, tailleCase))
+        #route horizontal bas
+        self.images["routeHB"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeHorizontalB.jpg").convert(), (tailleCase, tailleCase))
+        #route vertical gauche
+        self.images["routeVG"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeVerticalG.jpg").convert(), (tailleCase, tailleCase))
+        # route vertical droite
+        self.images["routeVD"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeVerticalD.jpg").convert(), (tailleCase, tailleCase))

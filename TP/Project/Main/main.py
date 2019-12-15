@@ -9,9 +9,7 @@ from Car.car import *
 run = 1
 window = pygame.display.set_mode((3900,3900),RESIZABLE)
 map = Map()
-map.initDict()
 map.genereMap()
-# map.creeFeuRouge (window)
 map.viewMap(window)
 
 car = Car(map,50,50)
@@ -22,10 +20,10 @@ window.blit(car.car,(car.x,car.y))# colle image à la position x et y
 # list.createRandCars()
 # list.print_all_cars(window)
 
-
 pygame.display.flip() # rafraichit l'ecran
 pygame.key.set_repeat(400, 30)
 # pygame.time.Clock().tick(1)
+
 while run:
 
     for event in pygame.event.get():
@@ -35,7 +33,6 @@ while run:
             # mouvement
 
             if event.key == K_UP:
-                print("test")
                 map.positionY += 50
                 # list.move_all_cars_y(-50)
             if event.key == K_DOWN:
@@ -50,10 +47,11 @@ while run:
                 # car.x -=50
     # # print(car.x, car.y)
 
-
+    map.reverseRedLightsColor()
     map.viewMap(window)
     # list.print_all_cars(window)
     car.printCar(window)
     # window.blit(car.direction,(car.x,car.y))
-    # pygame.display.flip()
+
+    #pygame.display.flip()
     # pygame.time.Clock().tick(30)

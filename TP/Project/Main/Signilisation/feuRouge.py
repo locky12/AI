@@ -4,8 +4,7 @@ import constante as const
 import Signilisation.signalisation as signal
 
 #feu rouge
-GREEN = (0,255,0)
-RED = (255,0,0)
+
 class ListFeuRouge :
     def __init__ (self):
         self.list = []
@@ -20,10 +19,10 @@ class GroupFeuRouge :
         self.list.append(redLight)
 
 class FeuRouge(signal.Signalisation):
-    def __init__(self,name):
-        signal.Signalisation.__init__(self,name, "stop")
-        self.color = GREEN
+    def __init__(self, name):
+        signal.Signalisation.__init__(self, name, "feu rouge")
+        self.color = 0
         self.group = 0
 
-    def printSignalisation (self,window,color,x,y) :
+    def printFeuRouge(self, window, x, y):
         pygame.draw.circle(window, self.color, (x + 25, y + 25), 10)
