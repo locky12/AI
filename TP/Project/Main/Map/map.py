@@ -2,10 +2,26 @@ import pygame
 from pygame.locals import *
 import constante as const
 import Signilisation.feuRouge as FR
+
 tailleCase = 50
-COUNT = 0
 RED = (255,0,0)
 GREEN = (0,255,0)
+hashmap = { "routeSimple" : "0",
+            "routeHH" : "8",
+            "routeHB" : "2",
+            "routeVD" : "6",
+            "routeVG" : "4",
+            "building": "b",
+            "carreNoir" : "_",
+            "feuHH" : "u",
+            "feuHB" : "n",
+            "feuVD" : "k",
+            "feuVG" : "h",
+            "pietonHH" : "z",
+            "pietonHB" : "w",
+            "pietonVD" : "d",
+            "pietonVG" : "q"}
+
 class Map :
 
     class Case:
@@ -15,43 +31,60 @@ class Map :
             self.y = 0
             self.caseX = 0
             self.caseY = 0
+            self.type = ""
             self.signalisation = 0
 
     def __init__(self):
         self.matrix = 0
-        self.positionX = 0
+        self.positionX = -50
         self.positionY = 0
         self.images = dict()
-        self.redLightTimer = 10000 #en millisecondes
+        self.redLightTimer = 3000 # = 3 secondes
         self.__genereMap()
 
     def viewMap(self, window) :
-        # road = pygame.image.load("Images/road.png").convert()
-        # road = pygame.transform.scale(road, (50, 50))
         window.blit(self.images["herbe"],(self.positionX,self.positionY))
 
         num_row = 0
         for countR,row in enumerate(self.matrix):
             num_case = 0
             for countC, case in enumerate(row) :
-                x = num_case * const.taille_case + self.positionX
-                y = num_row * const.taille_case + self.positionY
+                x = num_case * const.taille_case + self.positionY
+                y = num_row * const.taille_case + self.positionX
 
-                if case.char == "0" :
+                if case.char == hashmap["routeSimple"] :
                     window.blit(self.images["routeSimple"],(x,y))
-                if case.char == "8" :
+
+                if case.char == hashmap["routeHH"] :
                     window.blit(self.images["routeHH"],(x,y))
-                if case.char == "2" :
+
+                if case.char == hashmap["routeHB"] :
                     window.blit(self.images["routeHB"],(x,y))
-                if case.char == "4" :
+
+                if case.char == hashmap["routeVG"] :
                     window.blit(self.images["routeVG"],(x,y))
-                if case.char == "6" :
+
+                if case.char == hashmap["routeVD"] :
                     window.blit(self.images["routeVD"],(x,y))
-                if case.char == "b" :
+
+                if case.char == hashmap["building"] :
                     window.blit(self.images["carreNoir"],(x,y))
                     window.blit(self.images["building"],(x,y))
-                if case.char == "_" :
+
+                if case.char == hashmap["carreNoir"] :
                     window.blit(self.images["carreNoir"],(x,y))
+
+                if case.char == hashmap["feuHH"]:
+                    window.blit(self.images["routeHH"],(x,y))
+
+                if case.char == hashmap["feuHB"]:
+                    window.blit(self.images["routeHB"],(x,y))
+
+                if case.char == hashmap["feuVD"]:
+                    window.blit(self.images["routeVD"],(x,y))
+
+                if case.char == hashmap["feuVG"]:
+                    window.blit(self.images["routeVG"],(x,y))
 
                 case.x, case.y = x,y
                 num_case += 1
@@ -67,7 +100,7 @@ class Map :
                 x = num_case * const.taille_case + self.positionX
                 y = num_row * const.taille_case + self.positionY
 
-                if case.signalisation != 0 :
+                if case.type == "feu" :
                     if case.signalisation.color == RED :
                         case.signalisation.color = GREEN
                     else :
@@ -85,7 +118,7 @@ class Map :
                 x = num_case * const.taille_case + self.positionX
                 y = num_row * const.taille_case + self.positionY
 
-                if case.signalisation != 0 :
+                if case.type == "feu" :
                     case.signalisation.printFeuRouge(window, x, y)
 
                 case.x, case.y = x,y
@@ -116,21 +149,21 @@ class Map :
                 x = num_case * const.taille_case + self.positionX
                 y = num_row * const.taille_case + self.positionY
 
-                if case.char == "4" and self.matrix[num_row+1][num_case].char == "0":
-                    case.signalisation = FR.FeuRouge("RED")
-                    case.signalisation.color = RED
+                if case.char == hashmap["feuHH"]:
+                    case.type = "feu"
+                    case.signalisation = FR.FeuRouge(RED)
 
-                if case.char == "6" and self.matrix[num_row-1][num_case].char == "0":
-                    case.signalisation = FR.FeuRouge("RED")
-                    case.signalisation.color = RED
+                if case.char == hashmap["feuHB"]:
+                    case.type = "feu"
+                    case.signalisation = FR.FeuRouge(RED)
 
-                if case.char == "8" and self.matrix[num_row][num_case-1].char == "0":
-                    case.signalisation = FR.FeuRouge("RED")
-                    case.signalisation.color = GREEN
+                if case.char == hashmap["feuVD"]:
+                    case.type = "feu"
+                    case.signalisation = FR.FeuRouge(GREEN)
 
-                if case.char == "2" and self.matrix[num_row][num_case+1].char == "0":
-                    case.signalisation = FR.FeuRouge("RED")
-                    case.signalisation.color = GREEN
+                if case.char == hashmap["feuVG"]:
+                    case.type = "feu"
+                    case.signalisation = FR.FeuRouge(GREEN)
 
                 case.x, case.y = x,y
                 num_case += 1

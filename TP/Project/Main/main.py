@@ -57,6 +57,7 @@ while run:
 
     map.viewMap(window)
     # list.print_all_cars(window)
+    car.randomMove(window, map)
     car.printCar(window)
     # window.blit(car.direction,(car.x,car.y))
 
