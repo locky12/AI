@@ -18,7 +18,7 @@ class PassagePieton():
 
     def generePieton(self):
         if self.passants == 0:
-            if random() > 0.5:
+            if random() > 0.3:
                 self.passants = 1
         else :
             if random() > 0.2:

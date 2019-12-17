@@ -155,7 +155,7 @@ class Map :
 
                 if case.type == "pieton":
                     if case.signalisation.passants == 1:
-                        window.blit(self.images["pieton"],(x+15,y+15))
+                        window.blit(self.images["pieton"],(x,y))
 
                 case.x, case.y = x,y
                 num_case += 1
@@ -245,4 +245,4 @@ class Map :
         #panneau stop
         self.images["stop"] = pygame.transform.scale(pygame.image.load("./Data/Images/panneauStop.png").convert(), (tailleCase-25, tailleCase-25))
         #pieton
-        self.images["pieton"] = pygame.transform.scale(pygame.image.load("./Data/Images/homme.png").convert(), (tailleCase-25, tailleCase-25))
+        self.images["pieton"] = pygame.transform.scale(pygame.image.load("./Data/Images/homme.png").convert_alpha(), (tailleCase, tailleCase))
