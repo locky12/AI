@@ -4,6 +4,9 @@ import random
 import time
 from math import *
 from constante import *
+import sys
+sys.path.append("..")
+from Events import events
 # from car import *
 tailleCase = 50
 tailleAvance = 25
@@ -72,15 +75,24 @@ class Car():
             caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
 
     def moveStep (self, windows, map):
+        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
         time.sleep(self.time)
         if (self.direction == 0):
-            map.positionX += tailleAvance
+            caseFront = map.matrix[int(abs(map.positionX/50))][int(abs(map.positionY/50))+1]
+            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionX += tailleAvance
         if (self.direction == 1):
-            map.positionY -= tailleAvance
+            caseFront = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+2]
+            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionY -= tailleAvance
         if (self.direction == 2):
-            map.positionX -= tailleAvance
+            caseFront = map.matrix[int(abs(map.positionX/50))+2][int(abs(map.positionY/50))+1]
+            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionX -= tailleAvance
         if (self.direction == 3):
-            map.positionY += tailleAvance
+            caseFront = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))]
+            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionY += tailleAvance
 
     def caseFromTopDirection(self, windows, map):
         caseFront = map.matrix[int(abs(map.positionX/tailleCase))-1][int(abs(map.positionY/tailleCase))+1].char
