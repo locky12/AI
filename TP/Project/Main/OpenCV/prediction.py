@@ -55,12 +55,14 @@ class Predict :
 		for j in range(4) :
 			print(CLASSE_NAME[j]," : ",preds[0][j])
 		# show the output image
-		cv2.imshow("Image", output)
-		cv2.waitKey(0)
-		# print(tabulate(decode_predictions(preds, top=5)[0], headers=['Name', 'Probability']))
+		# cv2.imshow("Image", output)
+		# cv2.waitKey(0)
+		return CLASSE_NAME[i]
+		# print (tabulate(decode_predictions(preds, top=5)[0], headers=['Name', 'Probability']))
 
 
 
 
 predition = Predict()
-predition.predict("fr.jpg")
+r = predition.predict("fr.jpg")
+print(r)
