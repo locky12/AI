@@ -3,13 +3,13 @@
 # python predict.py --image images/dog.jpg --model output/smallvggnet.model --label-bin output/smallvggnet_lb.pickle --width 64 --height 64
 
 # import the necessary packages
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import argparse
 import pickle
 import cv2
 
 from keras.applications.mobilenet import decode_predictions
-from tabulate import tabulate
+#from tabulate import tabulate
 
 PATH_MODEL = "output/simple_nn.model"
 PATH_LABEL = "output/simple_nn_lb.pickle"
@@ -63,4 +63,4 @@ class Predict :
 
 
 predition = Predict()
-predition.predict("pieton.jpg")
+predition.predict("fr.jpg")
