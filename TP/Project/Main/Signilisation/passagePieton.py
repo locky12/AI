@@ -10,7 +10,7 @@ class PassagePieton():
         self.passants = 0
         #signal.Signalisation.__init__(self, "stop")
 
-    def getFontion(self):
+    def getFonction(self):
         if self.passants > 0:
             return "arreter"
         else :
