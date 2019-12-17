@@ -19,10 +19,12 @@ class Interface :
             return "continue"
         if result == "stop" :
             return "stop"
-        if result == "empty_pedestrian_crossing"
+        if result == "empty_pedestrian_crossing":
             return "continue"
-        if result == "pedestrian_crossing"
+        if result == "pedestrian_crossing":
             return "stop"
+
+
 
 
 r = Interface.predImage("fr.jpg")
