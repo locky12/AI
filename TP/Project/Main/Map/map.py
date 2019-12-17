@@ -45,11 +45,11 @@ class Map :
         self.positionX = -50
         self.positionY = 0
         self.images = dict()
-        self.Timer = 1000 # = 3 secondes
+        self.timerFeuRouge = 5000 # = 5 secondes
+        self.timerPieton = 2000 # = 5 secondes
         self.__genereMap()
 
     def viewMap(self, window) :
-        window.blit(self.images["herbe"],(self.positionX,self.positionY))
 
         num_row = 0
         for countR,row in enumerate(self.matrix):

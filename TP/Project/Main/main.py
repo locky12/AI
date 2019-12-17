@@ -9,10 +9,12 @@ window = pygame.display.set_mode((3900,3900),RESIZABLE)
 map = Map()
 #dessine la map
 map.viewMap(window)
-#evenement d'inversion des feux rouges
-SignalisationsEVENTS = USEREVENT + 1
-#on definit le timer
-pygame.time.set_timer(SignalisationsEVENTS, map.Timer)
+#evenement d'inversion des feux rouges et pietons
+FeuRougeEVENT = USEREVENT + 1
+PietonEVENT = USEREVENT + 2
+#on definit les timers
+pygame.time.set_timer(FeuRougeEVENT, map.timerFeuRouge)
+pygame.time.set_timer(PietonEVENT, map.timerPieton)
 
 car = Car(map,50,50)
 window.blit(car.car,(car.x,car.y))# colle image à la position x et y
@@ -33,8 +35,11 @@ while run:
             run = 0
 
         #inversion des feux rouges
-        if event.type == SignalisationsEVENTS:
+        if event.type == FeuRougeEVENT:
             map.reverseRedLightsColor()
+
+        #generation des pietons
+        if event.type == PietonEVENT:
             map.generePassants()
 
         # mouvement

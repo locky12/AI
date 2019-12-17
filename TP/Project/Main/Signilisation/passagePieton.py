@@ -21,5 +21,5 @@ class PassagePieton():
             if random() > 0.5:
                 self.passants = 1
         else :
-            if random() > 0.3:
+            if random() > 0.2:
                 self.passants = 0
