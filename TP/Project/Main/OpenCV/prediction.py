@@ -11,13 +11,14 @@ import cv2
 from keras.applications.mobilenet import decode_predictions
 #from tabulate import tabulate
 
-PATH_MODEL = "output/simple_nn.model"
-PATH_LABEL = "output/simple_nn_lb.pickle"
+PATH_MODEL = "../OpenCV/output/simple_nn.model"
+PATH_LABEL = "../OpenCV/output/simple_nn_lb.pickle"
 CLASSE_NAME = ["green_light", "pedestrian_crossing_empty", "red_light", "stop"]
+WIDTH  = 32
+HEIGHT = 32
 class Predict :
-	__width  = 32
-	__height = 32
-	__imageOutput = 0
+
+	# __imageOutput = 0
 	__model = 0
 	__label = 0
 
@@ -36,22 +37,23 @@ class Predict :
 
 	def __transformImageToPredict (self ,pathImage) :
 		image = cv2.imread(pathImage)
-		output = image.copy()
-		image = cv2.resize(image, (self.__width, self.__height))
+		# output = image.copy()
+		print(image)
+		image = cv2.resize(image, (WIDTH, HEIGHT))
 		image = image.astype("float") / 255.0
 		image = image.flatten()
 		image = image.reshape((1, image.shape[0]))
-		return image, output
+		return image
 
 
 	def predict (self, pathImage) :
-		image, output = self.__transformImageToPredict(pathImage)
+		image = self.__transformImageToPredict(pathImage)
 		preds = self.__model.predict(image)
 		i = preds.argmax(axis=1)[0]
 		label = self.__label.classes_[i]
 		text = "{}: {:.2f}%".format(label, preds[0][i] * 100)
-		cv2.putText(output, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
-			(0, 0, 255), 2)
+		# cv2.putText(output, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
+		# 	(0, 0, 255), 2)
 		for j in range(4) :
 			print(CLASSE_NAME[j]," : ",preds[0][j])
 		# show the output image
