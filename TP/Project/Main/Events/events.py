@@ -3,4 +3,4 @@ class Events() :
         pass
 
     def getEvenement(signalisation) :
-        return signalisation.getFontion()
+        return signalisation.getFonction()

@@ -9,5 +9,5 @@ class Stop():
         self.fonction = "arreter"
         #signal.Signalisation.__init__(self, "stop")
 
-    def getFontion(self):
+    def getFonction(self):
         return self.fonction

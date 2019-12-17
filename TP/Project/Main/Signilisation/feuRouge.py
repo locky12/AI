@@ -13,7 +13,7 @@ class FeuRouge():
         pygame.draw.circle(window, (0,0,0), (x + 25, y + 25), 12)
         pygame.draw.circle(window, self.color, (x + 25, y + 25), 10)
 
-    def getFontion(self):
+    def getFonction(self):
         if self.color == (255,0,0):
             return "stop"
         else :
