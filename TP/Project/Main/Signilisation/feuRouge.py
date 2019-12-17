@@ -5,6 +5,7 @@ import constante as const
 #feu rouge
 class FeuRouge():
     def __init__(self, color):
+        self.name = "feuRouge"
         self.color = color
         #signal.Signalisation.__init__(self, "feu rouge")
 
@@ -14,6 +15,6 @@ class FeuRouge():
 
     def getFontion(self):
         if self.color == (255,0,0):
-            return "arreter"
+            return "stop"
         else :
-            return "avancer"
+            return "continue"

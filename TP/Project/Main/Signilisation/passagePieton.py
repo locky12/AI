@@ -6,14 +6,15 @@ import constante as const
 #feu rouge
 class PassagePieton():
     def __init__(self):
+        self.name = "passagePieton"
         self.passants = 0
         #signal.Signalisation.__init__(self, "stop")
 
     def getFonction(self):
         if self.passants > 0:
-            return "arreter"
+            return "stop"
         else :
-            return "avancer"
+            return "continue"
 
     def generePieton(self):
         if self.passants == 0:
