@@ -6,7 +6,7 @@ import constante as const
 class Stop():
     def __init__(self):
         self.name = "stop"
-        self.fonction = "arreter"
+        self.fonction = "continue"
         #signal.Signalisation.__init__(self, "stop")
 
     def getFonction(self):
