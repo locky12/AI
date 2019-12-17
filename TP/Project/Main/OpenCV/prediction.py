@@ -11,8 +11,8 @@ import cv2
 from keras.applications.mobilenet import decode_predictions
 #from tabulate import tabulate
 
-PATH_MODEL = "../OpenCV/output/simple_nn.model"
-PATH_LABEL = "../OpenCV/output/simple_nn_lb.pickle"
+PATH_MODEL = "OpenCV/output/simple_nn.model"
+PATH_LABEL = "OpenCV/output/simple_nn_lb.pickle"
 CLASSE_NAME = ["green_light", "pedestrian_crossing_empty", "red_light", "stop"]
 WIDTH  = 32
 HEIGHT = 32
@@ -37,8 +37,6 @@ class Predict :
 
 	def __transformImageToPredict (self ,pathImage) :
 		image = cv2.imread(pathImage)
-		# output = image.copy()
-		print(image)
 		image = cv2.resize(image, (WIDTH, HEIGHT))
 		image = image.astype("float") / 255.0
 		image = image.flatten()
@@ -65,6 +63,6 @@ class Predict :
 
 
 
-predition = Predict()
-r = predition.predict("fr.jpg")
-print(r)
+# predition = Predict()
+# r = predition.predict("frg.jpg")
+# print(r)

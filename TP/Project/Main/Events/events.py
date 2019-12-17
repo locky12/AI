@@ -1,6 +1,10 @@
+from Events import interface
+
 class Events() :
     def __init__ () :
         pass
 
     def getEvenement(signalisation) :
-        return signalisation.getFonction()
+        image = signalisation.getRandomImage()
+        result = interface.Interface.predImage(image)
+        return result

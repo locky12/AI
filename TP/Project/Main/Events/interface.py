@@ -18,12 +18,12 @@ class Interface :
         if result == "green_light" :
             return "continue"
         if result == "stop" :
-            return "stop"
-        if result == "empty_pedestrian_crossing"
+            return "wait"
+        if result == "empty_pedestrian_crossing":
             return "continue"
-        if result == "pedestrian_crossing"
+        if result == "pedestrian_crossing":
             return "stop"
 
-
-r = Interface.predImage("fr.jpg")
-print(r)
+#
+# r = Interface.predImage("fr.jpg")
+# print(r)

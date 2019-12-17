@@ -1,14 +1,27 @@
 import pygame
-from random import *
+import random
 from pygame.locals import *
 import constante as const
+
+listePPPleins = []
+listePPPleins.append("./Data/imagesPPPlein/ppplein1.jpg")
+listePPPleins.append("./Data/imagesPPPlein/ppplein2.jpg")
+listePPPleins.append("./Data/imagesPPPlein/ppplein3.jpg")
+listePPPleins.append("./Data/imagesPPPlein/ppplein4.jpg")
+listePPPleins.append("./Data/imagesPPPlein/ppplein5.jpg")
+
+listePPVides = []
+listePPVides.append("./Data/imagesPPVide/ppvide1.jpg")
+listePPVides.append("./Data/imagesPPVide/ppvide2.jpg")
+listePPVides.append("./Data/imagesPPVide/ppvide3.jpg")
+listePPVides.append("./Data/imagesPPVide/ppvide4.jpg")
+listePPVides.append("./Data/imagesPPVide/ppvide5.jpg")
 
 #feu rouge
 class PassagePieton():
     def __init__(self):
         self.name = "passagePieton"
         self.passants = 0
-        #signal.Signalisation.__init__(self, "stop")
 
     def getFonction(self):
         if self.passants > 0:
@@ -18,8 +31,15 @@ class PassagePieton():
 
     def generePieton(self):
         if self.passants == 0:
-            if random() > 0.7:
+            if random.randint(1,10) > 7:
                 self.passants = 1
         else :
-            if random() > 0.2:
+            if random.randint(1,10) > 2:
                 self.passants = 0
+
+    def getRandomImage(self):
+        rand = random.randint(0,4)
+        if self.getFonction() == "stop" :
+            return listePPPleins[rand]
+        else :
+            return listePPVides[rand]
