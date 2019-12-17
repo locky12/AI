@@ -45,18 +45,13 @@ while run:
         # mouvement
         if event.type == KEYDOWN:
             if event.key == K_UP:
-                map.positionY += 50
-                # list.move_all_cars_y(-50)
-            if event.key == K_DOWN:
-                map.positionY -= 50
-                # list.move_all_cars_y(+50)
-            if event.key == K_LEFT:
                 map.positionX += 50
-                # list.move_all_cars_x(+50)
             if event.key == K_RIGHT:
+                map.positionY -= 50
+            if event.key == K_DOWN:
                 map.positionX -= 50
-                # list.move_all_cars_x(-50)
-                # car.x -=50
+            if event.key == K_LEFT:
+                map.positionY += 50
 
     # # print(car.x, car.y)
 
