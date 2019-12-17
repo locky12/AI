@@ -174,12 +174,8 @@ class Map :
         self.__initSignalisations()
 
     def __initSignalisations(self) :
-        num_row = 0
         for countR,row in enumerate(self.matrix):
-            num_case = 0
             for countC, case in enumerate(row) :
-                x = num_case * const.taille_case + self.positionX
-                y = num_row * const.taille_case + self.positionY
                 #feux
                 if case.char == hashmap["feuHH"]:
                     case.type = "feu"
@@ -204,10 +200,6 @@ class Map :
                 if case.char == hashmap["stopVG"] or case.char == hashmap["stopVD"] or case.char == hashmap["stopHH"] or case.char == hashmap["stopHB"] :
                     case.type = "stop"
                     case.signalisation = STOP.Stop()
-
-                case.x, case.y = x,y
-                num_case += 1
-            num_row += 1
 
     # charge les images et affiches les images
     def __initDict(self):
