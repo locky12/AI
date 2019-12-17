@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+/OpenCV/images/*jpg
+/OpenCV/images/*JPG
+/OpenCV/images/*jpeg
+/OpenCV/images/*png
+/OpenCV/images/*PNG
