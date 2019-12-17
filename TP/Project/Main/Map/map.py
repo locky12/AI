@@ -33,10 +33,6 @@ class Map :
     class Case:
         def __init__(self,char):
             self.char = char
-            self.x = 0
-            self.y = 0
-            self.caseX = 0
-            self.caseY = 0
             self.type = ""
             self.signalisation = 0
 
@@ -46,7 +42,7 @@ class Map :
         self.positionY = 0
         self.images = dict()
         self.timerFeuRouge = 5000 # = 5 secondes
-        self.timerPieton = 2000 # = 5 secondes
+        self.timerPieton = 2000 # = 2 secondes
         self.__genereMap()
 
     def viewMap(self, window) :

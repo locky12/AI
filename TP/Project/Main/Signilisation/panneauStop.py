@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 import constante as const
-import Signilisation.signalisation as signal
 
 #feu rouge
 class Stop():
