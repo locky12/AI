@@ -10,9 +10,9 @@ map = Map()
 #dessine la map
 map.viewMap(window)
 #evenement d'inversion des feux rouges
-REVERSEREDLIGHTSCOLORS = USEREVENT + 1
+SignalisationsEVENTS = USEREVENT + 1
 #on definit le timer
-pygame.time.set_timer(REVERSEREDLIGHTSCOLORS, map.redLightTimer)
+pygame.time.set_timer(SignalisationsEVENTS, map.Timer)
 
 car = Car(map,50,50)
 window.blit(car.car,(car.x,car.y))# colle image à la position x et y
@@ -33,8 +33,9 @@ while run:
             run = 0
 
         #inversion des feux rouges
-        if event.type == REVERSEREDLIGHTSCOLORS:
+        if event.type == SignalisationsEVENTS:
             map.reverseRedLightsColor()
+            map.generePassants()
 
         # mouvement
         if event.type == KEYDOWN:
