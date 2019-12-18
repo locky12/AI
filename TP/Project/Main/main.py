@@ -16,8 +16,8 @@ PietonEVENT = USEREVENT + 2
 pygame.time.set_timer(FeuRougeEVENT, map.timerFeuRouge)
 pygame.time.set_timer(PietonEVENT, map.timerPieton)
 
-car = Car(map,50,50)
-window.blit(car.car,(car.x,car.y))# colle image à la position x et y
+car = Car(map,50*decalX,50*decalY)
+window.blit(car.car,(car.y,car.x))# colle image à la position x et y
 # car1 = Car(map,300,50)
 # window.blit(car1.direction,(car1.x,car1.y))
 # list = ListCar(map)

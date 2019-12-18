@@ -7,9 +7,11 @@ from constante import *
 import sys
 sys.path.append("..")
 from Events import events
-# from car import *
 tailleCase = 50
-tailleAvance = 25
+tailleAvance = 10
+decalY = 1
+decalX = 1
+timeStop = 1
 
 class Car():
 
@@ -17,7 +19,7 @@ class Car():
         self.car = pygame.image.load("./Data/Images/carDown.png").convert_alpha()
         self.car = pygame.transform.scale(self.car, (50, 50))
         self.direction = 1
-        self.time = 0.1
+        self.time = 0
         self.distance = 50
         self.case_x = 100
         self.case_y = 100
@@ -32,8 +34,8 @@ class Car():
         pygame.display.flip()
 
     def randomMove(self, windows, map) :
-        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
-        if(caseCar == "0" and float(int(abs(map.positionX/50)+1)) == abs(map.positionX/50)+1 and float(int(abs(map.positionY/50)+1)) == abs(map.positionY/50)+1):
+        caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
+        if caseCar == "0" and float(int(map.positionX/50)) == map.positionX/50 and float(int(map.positionY/50)) == map.positionY/50:
             if self.direction == 0:
                 self.caseFromTopDirection(windows, map)
             if self.direction == 1:
@@ -47,57 +49,70 @@ class Car():
 
     def moveRight(self, windows, map):
         self.direction = (self.direction+1)%4
-        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+        caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         while caseCar == "0":
             self.moveStep(windows, map)
             self.printCar(windows)
-            caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+            caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
 
     def moveFront(self, windows, map):
-        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+        caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         while caseCar == "0":
             self.moveStep(windows, map)
             self.printCar(windows)
-            caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+            caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
 
     def moveLeft(self, windows, map):
-        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+        caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         self.moveStep(windows, map)
         self.printCar(windows)
-        while float(int(abs(map.positionX/50)+1)) != abs(map.positionX/50)+1 or float(int(abs(map.positionY/50)+1)) != abs(map.positionY/50)+1:
+        while float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50:
             self.moveStep(windows, map)
             self.printCar(windows)
-        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+        caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         self.direction = (self.direction+3)%4
         while caseCar == "0":
             self.moveStep(windows, map)
             self.printCar(windows)
-            caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+            caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
 
     def moveStep (self, windows, map):
-        caseCar = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+1].char
+        caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
+        # print(caseCar)
         time.sleep(self.time)
         if (self.direction == 0):
-            caseFront = map.matrix[int(abs(map.positionX/50))][int(abs(map.positionY/50))+1]
-            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+            caseFront = map.matrix[int(abs(map.positionX/50))-1 + decalX][int(abs(map.positionY/50))+decalY]
+            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionX += tailleAvance
+            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
+                time.sleep(timeStop)
                 map.positionX += tailleAvance
         if (self.direction == 1):
-            caseFront = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))+2]
-            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+            caseFront = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+1 + decalY]
+            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionY -= tailleAvance
+            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
+                time.sleep(timeStop)
                 map.positionY -= tailleAvance
         if (self.direction == 2):
-            caseFront = map.matrix[int(abs(map.positionX/50))+2][int(abs(map.positionY/50))+1]
-            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+            caseFront = map.matrix[int(abs(map.positionX/50))+1 + decalX][int(abs(map.positionY/50))+ decalY]
+            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionX -= tailleAvance
+            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
+                time.sleep(timeStop)
                 map.positionX -= tailleAvance
         if (self.direction == 3):
-            caseFront = map.matrix[int(abs(map.positionX/50))+1][int(abs(map.positionY/50))]
-            if caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+            caseFront = map.matrix[int(abs(map.positionX/50))+ decalX][int(abs(map.positionY/50))-1 + decalY]
+            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+                map.positionY += tailleAvance
+            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
+                time.sleep(timeStop)
                 map.positionY += tailleAvance
 
     def caseFromTopDirection(self, windows, map):
-        caseFront = map.matrix[int(abs(map.positionX/tailleCase))-1][int(abs(map.positionY/tailleCase))+1].char
-        caseRight = map.matrix[int(abs(map.positionX/tailleCase))+1][int(abs(map.positionY/tailleCase))+2].char
-        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))][int(abs(map.positionY/tailleCase))-1].char
+        caseFront = map.matrix[int(abs(map.positionX/tailleCase))-2 + decalX][int(abs(map.positionY/tailleCase)) + decalY].char
+        caseRight = map.matrix[int(abs(map.positionX/tailleCase)) + decalX][int(abs(map.positionY/tailleCase))+1 + decalY].char
+        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))-1 + decalX][int(abs(map.positionY/tailleCase))-2 + decalY].char
         sum = 0
         res = []
         if caseFront == "6":
@@ -115,9 +130,9 @@ class Car():
                 res[case](windows, map)
 
     def caseFromRightDirection(self, windows, map):
-        caseFront = map.matrix[int(abs(map.positionX/tailleCase))+1][int(abs(map.positionY/tailleCase))+3].char
-        caseRight = map.matrix[int(abs(map.positionX/tailleCase))+2][int(abs(map.positionY/tailleCase))+1].char
-        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))-1][int(abs(map.positionY/tailleCase))+2].char
+        caseFront = map.matrix[int(abs(map.positionX/tailleCase)) + decalX][int(abs(map.positionY/tailleCase))+ 2 + decalY].char
+        caseRight = map.matrix[int(abs(map.positionX/tailleCase))+ 1 + decalX][int(abs(map.positionY/tailleCase)) + decalY].char
+        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))- 2 + decalX][int(abs(map.positionY/tailleCase))+ 1 + decalY].char
         sum = 0
         res = []
         if caseFront == "2":
@@ -130,14 +145,15 @@ class Car():
             sum += 1
             res.append(self.moveLeft)
         rand = random.uniform(0,1)
+        print(res)
         for case in range(len(res)):
             if rand < (case+1)/sum and rand > case/sum:
                 res[case](windows, map)
 
     def caseFromBotDirection(self, windows, map):
-        caseFront = map.matrix[int(abs(map.positionX/tailleCase))+3][int(abs(map.positionY/tailleCase))+1].char
-        caseRight = map.matrix[int(abs(map.positionX/tailleCase))+1][int(abs(map.positionY/tailleCase))].char
-        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))+2][int(abs(map.positionY/tailleCase))+3].char
+        caseFront = map.matrix[int(abs(map.positionX/tailleCase))+2 + decalX][int(abs(map.positionY/tailleCase)) + decalY].char
+        caseRight = map.matrix[int(abs(map.positionX/tailleCase)) + decalX][int(abs(map.positionY/tailleCase))-1 + decalY].char
+        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))+1 + decalX][int(abs(map.positionY/tailleCase))+2 + decalY].char
         sum = 0
         res = []
         if caseFront == "4":
@@ -155,9 +171,9 @@ class Car():
                 res[case](windows, map)
 
     def caseFromLeftDirection(self, windows, map):
-        caseFront = map.matrix[int(abs(map.positionX/tailleCase))+1][int(abs(map.positionY/tailleCase))-1].char
-        caseRight = map.matrix[int(abs(map.positionX/tailleCase))][int(abs(map.positionY/tailleCase))+1].char
-        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))+3][int(abs(map.positionY/tailleCase))].char
+        caseFront = map.matrix[int(abs(map.positionX/tailleCase)) + decalX][int(abs(map.positionY/tailleCase))-2 + decalY].char
+        caseRight = map.matrix[int(abs(map.positionX/tailleCase))-1 + decalX][int(abs(map.positionY/tailleCase)) + decalY].char
+        caseLeft  = map.matrix[int(abs(map.positionX/tailleCase))+2 + decalX][int(abs(map.positionY/tailleCase))-1 + decalY].char
         sum = 0
         res = []
         if caseFront == "8":
