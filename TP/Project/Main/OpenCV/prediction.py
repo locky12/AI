@@ -1,5 +1,3 @@
-
-# import the necessary packages
 from tensorflow.keras.models import load_model
 import argparse
 import pickle
@@ -10,7 +8,7 @@ from keras.applications.mobilenet import decode_predictions
 
 PATH_MODEL = "OpenCV/output/simple_nn.model"
 PATH_LABEL = "OpenCV/output/simple_nn_lb.pickle"
-CLASSE_NAME = ["empty_pedestrian_crossing", "green_ligt","pedestrian_crossing", "stop" , "red_light" ]
+CLASSE_NAME = ["empty_pedestrian_crossing", "green_light","pedestrian_crossing", "red_light" , "stop"]
 WIDTH  = 32
 HEIGHT = 32
 class Predict :
@@ -21,11 +19,9 @@ class Predict :
 
 	def __init__(self) :
 		self.__model = self.__loadModel(PATH_MODEL)
-		print(self.__model)
 		self.__label = self.__loadLabel(PATH_LABEL)
 
 	def __loadModel (self,pathToModel) :
-		print(pathToModel)
 		return load_model(pathToModel)
 
 

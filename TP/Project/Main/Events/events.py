@@ -7,5 +7,4 @@ class Events() :
     def getEvenement(signalisation) :
         image = signalisation.getRandomImage()
         result = interface.Interface.predImage(image)
-        print("sign : ", signalisation.getFonction())
         return result

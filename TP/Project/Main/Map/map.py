@@ -120,25 +120,19 @@ class Map :
     def __initSignalisations(self) :
         for countR,row in enumerate(self.matrix):
             for countC, case in enumerate(row) :
-                #feux
                 if case.char == "u" or case.char == "n":
                     case.type = "feu"
                     case.signalisation = FR.FeuRouge(RED)
-
                 if case.char == "k" or case.char == "h":
                     case.type = "feu"
                     case.signalisation = FR.FeuRouge(GREEN)
-
-                #pietons
                 if case.char == "z" or case.char == "w" or case.char == "d" or case.char == "q" :
                     case.type = "pieton"
                     case.signalisation = PP.PassagePieton()
-                #stop
                 if case.char == "p" or case.char == "ù" or case.char == ":" or case.char == "l" :
                     case.type = "stop"
                     case.signalisation = STOP.Stop()
 
-    # charge les images et affiches les images
     def __initDict(self):
         self.images["herbe"] = pygame.transform.scale(pygame.image.load("./Data/Images/herbe.jpg").convert(), (1900, 1000))
 
@@ -157,7 +151,6 @@ class Map :
         self.images["routeVG"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeVerticalG.jpg").convert(), (tailleCase, tailleCase))
         # route vertical droite
         self.images["routeVD"] = pygame.transform.scale(pygame.image.load("./Data/Images/routeVerticalD.jpg").convert(), (tailleCase, tailleCase))
-
         #pieton horizontal haut
         self.images["pietonHH"] = pygame.transform.scale(pygame.image.load("./Data/Images/pietonHorizontalH.jpg").convert(), (tailleCase, tailleCase))
         #pieton horizontal bas
@@ -166,7 +159,6 @@ class Map :
         self.images["pietonVG"] = pygame.transform.scale(pygame.image.load("./Data/Images/pietonVerticalG.jpg").convert(), (tailleCase, tailleCase))
         #pieton vertical droite
         self.images["pietonVD"] = pygame.transform.scale(pygame.image.load("./Data/Images/pietonVerticalD.jpg").convert(), (tailleCase, tailleCase))
-
         #panneau stop
         self.images["stop"] = pygame.transform.scale(pygame.image.load("./Data/Images/panneauStop.png").convert(), (tailleCase-25, tailleCase-25))
         #pieton

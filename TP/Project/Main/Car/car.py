@@ -7,6 +7,7 @@ from constante import *
 import sys
 sys.path.append("..")
 from Events import events
+# from feuRouge import feuRouge
 
 tailleCase = 50
 tailleAvance = 50

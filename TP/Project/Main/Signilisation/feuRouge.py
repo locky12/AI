@@ -17,7 +17,6 @@ listeFeuVerts.append("./Data/imagesFeuVert/feuvert3.jpg")
 listeFeuVerts.append("./Data/imagesFeuVert/feuvert4.jpg")
 listeFeuVerts.append("./Data/imagesFeuVert/feuvert5.jpg")
 
-#feu rouge
 class FeuRouge():
     def __init__(self, color):
         self.name = "feuRouge"
@@ -35,7 +34,7 @@ class FeuRouge():
 
     def getRandomImage(self):
         rand = random.randint(0,4)
-        if self.getFonction() == "stop" :
+        if self.getFonction() == "red" :
             return listeFeuRouges[rand]
         else :
             return listeFeuVerts[rand]

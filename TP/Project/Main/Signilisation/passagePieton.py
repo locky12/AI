@@ -17,7 +17,6 @@ listePPVides.append("./Data/imagesPPVide/ppvide3.jpg")
 listePPVides.append("./Data/imagesPPVide/ppvide4.jpg")
 listePPVides.append("./Data/imagesPPVide/ppvide5.jpg")
 
-#feu rouge
 class PassagePieton():
     def __init__(self):
         self.name = "passagePieton"
@@ -39,7 +38,7 @@ class PassagePieton():
 
     def getRandomImage(self):
         rand = random.randint(0,4)
-        if self.getFonction() == "stop" :
+        if self.getFonction() == "pedestrian" :
             return listePPPleins[rand]
         else :
             return listePPVides[rand]

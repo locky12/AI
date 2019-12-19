@@ -9,7 +9,6 @@ listeStops.append("./Data/imagesStop/stop3.jpg")
 listeStops.append("./Data/imagesStop/stop4.jpg")
 listeStops.append("./Data/imagesStop/stop5.jpg")
 
-#stop
 class Stop():
     def __init__(self):
         self.name = "stop"
