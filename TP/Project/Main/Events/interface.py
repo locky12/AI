@@ -13,6 +13,7 @@ class Interface :
     def predImage (pathImage) :
         pred = prediction.Predict()
         result  = pred.predict(pathImage)
+        print("result : " , result)
         if result == "red_light" :
             return "stop"
         if result == "green_light" :
