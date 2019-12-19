@@ -9,13 +9,18 @@ sys.path.append("..")
 from Events import events
 tailleCase = 50
 tailleAvance = 50
+tailleStat = 3
+
 decalY = 1
 decalX = 1
 timeStop = 1
 
-stopTab = [0, 0]
-waitTab = [0, 0]
-continueTab = [0, 0]
+statTab = [0] * tailleStat
+for i in range(tailleStat):
+    ligne = [0] * tailleStat
+    statTab[i] = ligne[:]
+
+signTab = ["continue", "wait", "stop"]
 
 class Car():
 
@@ -40,7 +45,7 @@ class Car():
     def carMove(self, number, windows, map):
         for i in range(number):
             self.randomMove(windows, map)
-        Car.afficheStat()
+        Car.viewTabStat()
 
     def randomMove(self, windows, map) :
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
@@ -112,48 +117,41 @@ class Car():
     def moveY(self, windows, map, change, caseFront):
         if not Car.itIsInMiddleCase(map) or caseFront.signalisation == 0:
             map.positionY += change
-        elif events.Events.getEvenement(caseFront.signalisation) == "continue":
-            if caseFront.signalisation.getFonction() == "continue":
-                continueTab[1] += 1
-            else:
-                continueTab[0] += 1
-            map.positionY += change
-        elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-            if caseFront.signalisation.getFonction() == "wait":
-                waitTab[1] += 1
-            else:
-                waitTab[0] += 1
-            time.sleep(timeStop)
-            map.positionY += change
-        elif events.Events.getEvenement(caseFront.signalisation) == "stop":
-            if caseFront.signalisation.getFonction() == "stop":
-                stopTab[1] += 1
-            else:
-                stopTab[0] += 1
+        else:
+            pred = events.Events.getEvenement(caseFront.signalisation)
+            real = caseFront.signalisation.getFonction()
+            if pred == "continue":
+                map.positionY += change
+            if pred == "wait":
+                time.sleep(timeStop)
+                map.positionY += change
+            if pred == "stop":
+                i = 0
+
+            if pred != None and real != None:
+                statTab[Car.signalisationReturn(pred)][Car.signalisationReturn(real)] += 1
 
     def moveX(self, windows, map, change, caseFront):
         if not Car.itIsInMiddleCase(map) or caseFront.signalisation == 0:
             map.positionX += change
-        elif events.Events.getEvenement(caseFront.signalisation) == "continue":
-            if caseFront.signalisation.getFonction() == "continue":
-                continueTab[1] += 1
-            else:
-                continueTab[0] += 1
-            map.positionX += change
-        elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-            if caseFront.signalisation.getFonction() == "wait":
-                waitTab[1] += 1
-            else:
-                waitTab[0] += 1
+        else:
+            pred = events.Events.getEvenement(caseFront.signalisation)
+            real = caseFront.signalisation.getFonction()
+            if pred == "continue":
+                map.positionX += change
+            if pred == "wait":
+                time.sleep(timeStop)
+                map.positionX += change
+            if pred == "stop":
+                i = 0
 
-            time.sleep(timeStop)
-            map.positionX += change
-        elif events.Events.getEvenement(caseFront.signalisation) == "stop":
-            if caseFront.signalisation.getFonction() == "stop":
-                stopTab[1] += 1
-            else:
-                stopTab[0] += 1
+            if pred != None and real != None:
+                statTab[Car.signalisationReturn(pred)][Car.signalisationReturn(real)] += 1
 
+    def signalisationReturn(signalisation):
+        for i in range(tailleStat):
+            if signalisation == signTab[i]:
+                return i
 
     def caseFromTopDirection(self, windows, map):
         caseFront = map.matrix[int(abs(map.positionX/tailleCase))-2 + decalX][int(abs(map.positionY/tailleCase)) + decalY].char
@@ -241,9 +239,26 @@ class Car():
         else:
             return False
 
+    def viewTabStat():
+        print()
+        print("pred\\real\t", end="")
+        for i in range(len(signTab)):
+            for j in range(7):
+                if j < len(signTab[i]):
+                    print(signTab[i][j], end="")
+                else:
+                    print(" ", end="")
+            print("\t", end="")
+        print()
 
-    def afficheStat():
-        print("\n\tfaux", "\tjuste")
-        print("continue", continueTab[0], "\t", continueTab[1])
-        print("stop\t", stopTab[0], "\t", stopTab[1])
-        print("wait\t", waitTab[0], "\t", waitTab[1], "\n")
+        for i in range(len(statTab)):
+            for j in range(10):
+                if j < len(signTab[i]):
+                    print(signTab[i][j], end="")
+                else:
+                    print(" ", end="")
+            print("\t", end="")
+            for j in range(len(statTab[i])):
+                print(statTab[i][j], "\t", end ="")
+            print()
+        print()
