@@ -13,7 +13,7 @@ listeStops.append("./Data/imagesStop/stop5.jpg")
 class Stop():
     def __init__(self):
         self.name = "stop"
-        self.fonction = "wait"
+        self.fonction = "stop"
 
     def getFonction(self):
         return self.fonction
