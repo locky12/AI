@@ -45,11 +45,6 @@ class Map :
         self.timerPieton = 2000 # = 2 secondes
         self.__genereMap()
 
-    def get_key(val, map):
-        for key, value in map.items():
-            if val == value:
-                return key
-
     def viewMap(self, window) :
 
         num_row = 0
