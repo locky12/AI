@@ -44,7 +44,7 @@ class Car():
 
     def randomMove(self, windows, map) :
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
-        if caseCar == "0" and float(int(map.positionX/50)) == map.positionX/50 and float(int(map.positionY/50)) == map.positionY/50:
+        if caseCar == "0" and Car.itIsInMiddleCase(map):
             if self.direction == 0:
                 self.caseFromTopDirection(windows, map)
             if self.direction == 1:
@@ -77,7 +77,7 @@ class Car():
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         self.move(windows, map)
         self.printCar(windows)
-        while float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50:
+        while not Car.itIsInMiddleCase(map) : # float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50
             self.move(windows, map)
             self.printCar(windows)
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
@@ -89,7 +89,6 @@ class Car():
 
     def move (self, windows, map):
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
-        # print(caseCar)
         time.sleep(self.time)
         if (self.direction == 0):
             caseFront = map.matrix[int(abs(map.positionX/50))-1 + decalX][int(abs(map.positionY/50))+decalY]
@@ -111,35 +110,38 @@ class Car():
             self.moveX(windows, map, change, caseFront)
 
     def moveY(self, windows, map, change, caseFront):
-        if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
-            if caseFront.char == "6": # TODO if sur signalisation feu vert et passage pieton vide
+        if not Car.itIsInMiddleCase(map) or caseFront.signalisation == 0:
+            map.positionY += change
+        elif events.Events.getEvenement(caseFront.signalisation) == "continue":
+            if caseFront.signalisation.getFonction() == "continue":
                 continueTab[1] += 1
-            elif caseFront.char == "6": # TODO if signalisation feu rouge passage pieton occupé ou panneau stop
+            else:
                 continueTab[0] += 1
             map.positionY += change
         elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-            if caseFront.char == "6": # TODO if sur panneau stop
+            if caseFront.signalisation.getFonction() == "wait":
                 waitTab[1] += 1
             else:
                 waitTab[0] += 1
             time.sleep(timeStop)
             map.positionY += change
         elif events.Events.getEvenement(caseFront.signalisation) == "stop":
-            if caseFront.char == "6": # TODO if signalisation feu rouge passage pieton occupé
+            if caseFront.signalisation.getFonction() == "stop":
                 stopTab[1] += 1
             else:
                 stopTab[0] += 1
 
     def moveX(self, windows, map, change, caseFront):
-        if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
-            if caseFront.char == "2": # TODO if sur signalisation feu vert et passage pieton vide
+        if not Car.itIsInMiddleCase(map) or caseFront.signalisation == 0:
+            map.positionX += change
+        elif events.Events.getEvenement(caseFront.signalisation) == "continue":
+            if caseFront.signalisation.getFonction() == "continue":
                 continueTab[1] += 1
-            elif caseFront.char == "2": # TODO if signalisation feu rouge passage pieton occupé ou panneau stop
+            else:
                 continueTab[0] += 1
-
             map.positionX += change
         elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-            if caseFront.char == "2": # TODO if sur panneau stop
+            if caseFront.signalisation.getFonction() == "wait":
                 waitTab[1] += 1
             else:
                 waitTab[0] += 1
@@ -147,7 +149,7 @@ class Car():
             time.sleep(timeStop)
             map.positionX += change
         elif events.Events.getEvenement(caseFront.signalisation) == "stop":
-            if caseFront.char == "2": # TODO if signalisation feu rouge passage pieton occupé
+            if caseFront.signalisation.getFonction() == "stop":
                 stopTab[1] += 1
             else:
                 stopTab[0] += 1
@@ -232,6 +234,13 @@ class Car():
         for case in range(len(res)):
             if rand < (case+1)/sum and rand > case/sum:
                 res[case](windows, map)
+
+    def itIsInMiddleCase(map):
+        if float(int(map.positionX/50)) == map.positionX/50 and float(int(map.positionY/50)) == map.positionY/50:
+            return True
+        else:
+            return False
+
 
     def afficheStat():
         print("\n\tfaux", "\tjuste")
