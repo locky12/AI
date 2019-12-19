@@ -15,15 +15,15 @@ class Interface :
         result  = pred.predict(pathImage)
         print("result : " , result)
         if result == "red_light" :
-            return "stop"
+            return "red"
         if result == "green_light" :
-            return "continue"
+            return "green"
         if result == "stop" :
-            return "wait"
-        if result == "empty_pedestrian_crossing":
-            return "continue"
-        if result == "pedestrian_crossing":
             return "stop"
+        if result == "empty_pedestrian_crossing":
+            return "empty"
+        if result == "pedestrian_crossing":
+            return "pedestrian"
 
 #
 # r = Interface.predImage("fr.jpg")

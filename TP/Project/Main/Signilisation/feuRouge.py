@@ -29,9 +29,9 @@ class FeuRouge():
 
     def getFonction(self):
         if self.color == (255,0,0):
-            return "stop"
+            return "red"
         else :
-            return "continue"
+            return "green"
 
     def getRandomImage(self):
         rand = random.randint(0,4)

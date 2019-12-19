@@ -25,9 +25,9 @@ class PassagePieton():
 
     def getFonction(self):
         if self.passants > 0:
-            return "stop"
+            return "pedestrian"
         else :
-            return "continue"
+            return "empty"
 
     def generePieton(self):
         if self.passants == 0:

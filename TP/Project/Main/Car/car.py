@@ -7,20 +7,21 @@ from constante import *
 import sys
 sys.path.append("..")
 from Events import events
+
 tailleCase = 50
 tailleAvance = 50
-tailleStat = 3
+tailleStat = 5
 
 decalY = 1
 decalX = 1
 timeStop = 1
 
-statTab = [0] * tailleStat
-for i in range(tailleStat):
-    ligne = [0] * tailleStat
+statTab = [0] * (tailleStat +1)
+for i in range(len(statTab)):
+    ligne = [0] * (tailleStat + 1)
     statTab[i] = ligne[:]
 
-signTab = ["continue", "wait", "stop"]
+signTab = ["green", "empty", "stop", "red", "pedestrian", "total"]
 
 class Car():
 
@@ -120,16 +121,19 @@ class Car():
         else:
             pred = events.Events.getEvenement(caseFront.signalisation)
             real = caseFront.signalisation.getFonction()
-            if pred == "continue":
-                map.positionY += change
-            if pred == "wait":
-                time.sleep(timeStop)
+            if pred == "green" or pred == "empty":
                 map.positionY += change
             if pred == "stop":
+                time.sleep(timeStop)
+                map.positionY += change
+            if pred == "red" or pred == "pedestrian":
                 i = 0
 
             if pred != None and real != None:
                 statTab[Car.signalisationReturn(pred)][Car.signalisationReturn(real)] += 1
+                statTab[Car.signalisationReturn(pred)][tailleStat] += 1
+                statTab[tailleStat][Car.signalisationReturn(real)] += 1
+                statTab[tailleStat][tailleStat] += 1
 
     def moveX(self, windows, map, change, caseFront):
         if not Car.itIsInMiddleCase(map) or caseFront.signalisation == 0:
@@ -137,16 +141,19 @@ class Car():
         else:
             pred = events.Events.getEvenement(caseFront.signalisation)
             real = caseFront.signalisation.getFonction()
-            if pred == "continue":
-                map.positionX += change
-            if pred == "wait":
-                time.sleep(timeStop)
+            if pred == "green" or pred == "empty":
                 map.positionX += change
             if pred == "stop":
+                time.sleep(timeStop)
+                map.positionX += change
+            if pred == "red" or pred == "pedestrian":
                 i = 0
 
             if pred != None and real != None:
                 statTab[Car.signalisationReturn(pred)][Car.signalisationReturn(real)] += 1
+                statTab[Car.signalisationReturn(pred)][tailleStat] += 1
+                statTab[tailleStat][Car.signalisationReturn(real)] += 1
+                statTab[tailleStat][tailleStat] += 1
 
     def signalisationReturn(signalisation):
         for i in range(tailleStat):
