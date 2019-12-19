@@ -10,7 +10,7 @@ from Events import events
 # from feuRouge import feuRouge
 
 tailleCase = 50
-tailleAvance = 50
+tailleAvance = 25
 tailleStat = 5
 
 decalY = 1
@@ -30,7 +30,7 @@ class Car():
         self.car = pygame.image.load("./Data/Images/carDown.png").convert_alpha()
         self.car = pygame.transform.scale(self.car, (50, 50))
         self.direction = 1
-        self.time = 0
+        self.time = 0.1
         self.distance = 50
         self.case_x = 100
         self.case_y = 100
