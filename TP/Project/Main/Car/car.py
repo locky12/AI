@@ -8,10 +8,14 @@ import sys
 sys.path.append("..")
 from Events import events
 tailleCase = 50
-tailleAvance = 10
+tailleAvance = 50
 decalY = 1
 decalX = 1
 timeStop = 1
+
+stopTab = [0, 0]
+waitTab = [0, 0]
+continueTab = [0, 0]
 
 class Car():
 
@@ -33,6 +37,11 @@ class Car():
         window.blit(self.car,(self.y,self.x))
         pygame.display.flip()
 
+    def carMove(self, number, windows, map):
+        for i in range(number):
+            self.randomMove(windows, map)
+        Car.afficheStat()
+
     def randomMove(self, windows, map) :
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         if caseCar == "0" and float(int(map.positionX/50)) == map.positionX/50 and float(int(map.positionY/50)) == map.positionY/50:
@@ -45,69 +54,104 @@ class Car():
             if self.direction == 3:
                 self.caseFromLeftDirection(windows, map)
         else:
-            self.moveStep(windows, map)
+            self.move(windows, map)
+
+        self.printCar(windows)
 
     def moveRight(self, windows, map):
         self.direction = (self.direction+1)%4
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         while caseCar == "0":
-            self.moveStep(windows, map)
+            self.move(windows, map)
             self.printCar(windows)
             caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
 
     def moveFront(self, windows, map):
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         while caseCar == "0":
-            self.moveStep(windows, map)
+            self.move(windows, map)
             self.printCar(windows)
             caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
 
     def moveLeft(self, windows, map):
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
-        self.moveStep(windows, map)
+        self.move(windows, map)
         self.printCar(windows)
         while float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50:
-            self.moveStep(windows, map)
+            self.move(windows, map)
             self.printCar(windows)
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         self.direction = (self.direction+3)%4
         while caseCar == "0":
-            self.moveStep(windows, map)
+            self.move(windows, map)
             self.printCar(windows)
             caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
 
-    def moveStep (self, windows, map):
+    def move (self, windows, map):
         caseCar = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+decalY].char
         # print(caseCar)
         time.sleep(self.time)
         if (self.direction == 0):
             caseFront = map.matrix[int(abs(map.positionX/50))-1 + decalX][int(abs(map.positionY/50))+decalY]
-            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
-                map.positionX += tailleAvance
-            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-                time.sleep(timeStop)
-                map.positionX += tailleAvance
+            self.moveStep(windows, map, "positionX", tailleAvance, caseFront)
         if (self.direction == 1):
             caseFront = map.matrix[int(abs(map.positionX/50))+decalX][int(abs(map.positionY/50))+1 + decalY]
-            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
-                map.positionY -= tailleAvance
-            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-                time.sleep(timeStop)
-                map.positionY -= tailleAvance
+            self.moveStep(windows, map, "positionY", -tailleAvance, caseFront)
         if (self.direction == 2):
             caseFront = map.matrix[int(abs(map.positionX/50))+1 + decalX][int(abs(map.positionY/50))+ decalY]
-            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
-                map.positionX -= tailleAvance
-            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-                time.sleep(timeStop)
-                map.positionX -= tailleAvance
+            self.moveStep(windows, map, "positionX", -tailleAvance, caseFront)
         if (self.direction == 3):
             caseFront = map.matrix[int(abs(map.positionX/50))+ decalX][int(abs(map.positionY/50))-1 + decalY]
-            if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
-                map.positionY += tailleAvance
-            elif events.Events.getEvenement(caseFront.signalisation) == "wait":
-                time.sleep(timeStop)
-                map.positionY += tailleAvance
+            self.moveStep(windows, map, "positionY", tailleAvance, caseFront)
+
+    def moveStep(self, windows, map, axe, change, caseFront):
+        if axe == "positionY":
+            self.moveY(windows, map, change, caseFront)
+        elif axe == "positionX":
+            self.moveX(windows, map, change, caseFront)
+
+    def moveY(self, windows, map, change, caseFront):
+        if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+            if caseFront.char == "6": # TODO if sur signalisation feu vert et passage pieton vide
+                continueTab[1] += 1
+            elif caseFront.char == "6": # TODO if signalisation feu rouge passage pieton occupé ou panneau stop
+                continueTab[0] += 1
+            map.positionY += change
+        elif events.Events.getEvenement(caseFront.signalisation) == "wait":
+            if caseFront.char == "6": # TODO if sur panneau stop
+                waitTab[1] += 1
+            else:
+                waitTab[0] += 1
+            time.sleep(timeStop)
+            map.positionY += change
+        elif events.Events.getEvenement(caseFront.signalisation) == "stop":
+            if caseFront.char == "6": # TODO if signalisation feu rouge passage pieton occupé
+                stopTab[1] += 1
+            else:
+                stopTab[0] += 1
+
+    def moveX(self, windows, map, change, caseFront):
+        if float(int(map.positionX/50)) != map.positionX/50 or float(int(map.positionY/50)) != map.positionY/50 or caseFront.signalisation == 0 or events.Events.getEvenement(caseFront.signalisation) == "continue":
+            if caseFront.char == "2": # TODO if sur signalisation feu vert et passage pieton vide
+                continueTab[1] += 1
+            elif caseFront.char == "2": # TODO if signalisation feu rouge passage pieton occupé ou panneau stop
+                continueTab[0] += 1
+
+            map.positionX += change
+        elif events.Events.getEvenement(caseFront.signalisation) == "wait":
+            if caseFront.char == "2": # TODO if sur panneau stop
+                waitTab[1] += 1
+            else:
+                waitTab[0] += 1
+
+            time.sleep(timeStop)
+            map.positionX += change
+        elif events.Events.getEvenement(caseFront.signalisation) == "stop":
+            if caseFront.char == "2": # TODO if signalisation feu rouge passage pieton occupé
+                stopTab[1] += 1
+            else:
+                stopTab[0] += 1
+
 
     def caseFromTopDirection(self, windows, map):
         caseFront = map.matrix[int(abs(map.positionX/tailleCase))-2 + decalX][int(abs(map.positionY/tailleCase)) + decalY].char
@@ -145,7 +189,6 @@ class Car():
             sum += 1
             res.append(self.moveLeft)
         rand = random.uniform(0,1)
-        print(res)
         for case in range(len(res)):
             if rand < (case+1)/sum and rand > case/sum:
                 res[case](windows, map)
@@ -189,3 +232,9 @@ class Car():
         for case in range(len(res)):
             if rand < (case+1)/sum and rand > case/sum:
                 res[case](windows, map)
+
+    def afficheStat():
+        print("\n\tfaux", "\tjuste")
+        print("continue", continueTab[0], "\t", continueTab[1])
+        print("stop\t", stopTab[0], "\t", stopTab[1])
+        print("wait\t", waitTab[0], "\t", waitTab[1], "\n")

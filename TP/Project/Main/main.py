@@ -58,8 +58,8 @@ while run:
 
     map.viewMap(window)
     # list.print_all_cars(window)
-    car.randomMove(window, map)
-    car.printCar(window)
+    # car.randomMove(window, map)
+    car.carMove(20, window, map)
     # window.blit(car.direction,(car.x,car.y))
 
     #pygame.display.flip()
