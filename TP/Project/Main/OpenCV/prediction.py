@@ -52,8 +52,8 @@ class Predict :
 		text = "{}: {:.2f}%".format(label, preds[0][i] * 100)
 		# cv2.putText(output, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
 		# 	(0, 0, 255), 2)
-		for j in range(5) :
-			print(CLASSE_NAME[j]," : ",preds[0][j])
+		# for j in range(5) :
+		# 	print(CLASSE_NAME[j]," : ",preds[0][j])
 		# show the output image
 		# cv2.imshow("Image", output)
 		# cv2.waitKey(0)
